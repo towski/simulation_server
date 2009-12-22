@@ -1,5 +1,10 @@
-class User < ActiveRecord::Base
-  has_many :animals
+class User
+  include MongoMapper::Document
+
+  key :x, Integer
+  key :y, Integer
+
+  many :animals
 
   def map
     Map.new(x,y)

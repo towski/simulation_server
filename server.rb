@@ -1,5 +1,4 @@
 require 'main'
-URI="druby://localhost:8787"
 
 class Server
   def new_session
@@ -13,6 +12,6 @@ end
 
 $SAFE = 0   # disable eval() and friends
 
-DRb.start_service(URI, Server.new)
+DRb.start_service("druby://localhost:8787", Server.new)
 # Wait for the drb server thread to finish before exiting.
 DRb.thread.join

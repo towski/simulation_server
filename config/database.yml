@@ -1,0 +1,8 @@
+development: &global_settings
+  database: textual_development
+  host: 127.0.0.1
+  port: 27017
+ 
+test:
+  database: textual_test
+  <<: *global_settings

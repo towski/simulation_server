@@ -2,27 +2,32 @@ class Map
   include DRb::DRbUndumped
   WIDTH  = 120
   HEIGHT = 40
-  attr_reader :animals, :terrain
+  attr_reader :animals, :terrain, :x, :y
   def initialize(x, y)
-    @terrain = Terrain.all(:conditions => ["x >= ? and x < ? and y >= ? and y < ?", x, x + WIDTH, y, y + HEIGHT])
-    @animals = Animal.all(:conditions => ["x >= ? and x < ? and y >= ? and y < ?", x, x + WIDTH, y, y + HEIGHT])
+    @x, @y = x, y
+    @terrain = Terrain.all("$where" => "(this.x >= #{x} || this.x <= #{x + WIDTH}) && (this.y >= #{y} || this.y <= #{y + HEIGHT})")
+    @animals = Animal.all("$where" => "this.x >= #{x} && this.x <= #{x + WIDTH} && this.y >= #{y} && this.y <= #{y + HEIGHT}")
   end
 
   def grid
     @grid ||= begin 
-      grid = []
-      HEIGHT.times {|i| grid[i] = [] }
+      the_grid = []
+      HEIGHT.times {|i| the_grid[i] = [] }
       @terrain.each do |terrain|
-        terrain.height.times do |x|
-          terrain.width.times do |y|
-            grid[x + (terrain.x - 1)][y + (terrain.y - 1)] = terrain.kind 
+        terrain.height.times do |y|
+          terrain.width.times do |x|
+            potential_y = y + (terrain.y - 1) - (@y - 1)
+            next if potential_y < 0 || potential_y > HEIGHT - 1
+            potential_x = x + (terrain.x - 1) - (@x - 1)
+            next if potential_x < 0 || potential_x > WIDTH - 1
+            the_grid[potential_y][potential_x] = terrain.kind 
           end
         end
       end
       @animals.each do |animal|
-        grid[animal.x - 1][animal.y - 1] = animal.species 
+        the_grid[animal.y - 1 - @y][animal.x - @x] = animal.species 
       end
-      grid
+      the_grid
     end
   end
 end
