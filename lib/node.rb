@@ -91,25 +91,32 @@ end
 
 class Flatland < Node
   self.cost   = 1
+  self.letter = '.'
 end
 
 class Start < Flatland
+  self.letter = ' '
 end
 
 class Goal < Flatland
+  self.letter = ' '
 end
 
 class Water < Node
   def walkable?
     false
   end
+
+  self.letter = '~'
 end
 
 class Forest < Node
   self.cost   = 2
+  self.letter = '*'
 end
 
 class Mountain < Node
   self.cost   = 3
+  self.letter = '^'
 end
 
