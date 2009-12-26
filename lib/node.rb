@@ -45,6 +45,10 @@ class Node
     def by_name(name)
       other_subclasses.find{|klass| klass.name == name.titleize }
     end
+
+    def by_letter(letter)
+      other_subclasses.find{|klass| klass.letter == letter }
+    end
   end
 
   attr_accessor :parent, :cost, :cost_estimated
@@ -89,16 +93,16 @@ class Node
   end
 end
 
-class Flatland < Node
+class Plains < Node
   self.cost   = 1
   self.letter = '.'
 end
 
-class Start < Flatland
+class Start < Plains
   self.letter = ' '
 end
 
-class Goal < Flatland
+class Goal < Plains
   self.letter = ' '
 end
 

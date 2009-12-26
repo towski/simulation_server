@@ -5,7 +5,7 @@ class Map
   attr_reader :animals, :terrain, :x, :y
   def initialize(x, y)
     @x, @y = x, y
-    @terrain = Terrain.all("$where" => "(this.x >= #{x} || this.x <= #{x + WIDTH}) && (this.y >= #{y} || this.y <= #{y + HEIGHT})")
+    @terrain = Terrain.within(x, x + WIDTH, y, y + HEIGHT)
     @animals = Animal.all("$where" => "this.x >= #{x} && this.x <= #{x + WIDTH} && this.y >= #{y} && this.y <= #{y + HEIGHT}")
   end
 
