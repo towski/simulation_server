@@ -9,8 +9,8 @@ class Terrain
     end
   end
 
-  def self.within(x_start, y_start, x_end, y_end)
-    all("$where" => "(this.x >= #{x_start} || this.x <= #{x_end}) && (this.y >= #{y_start} || this.y <= #{y_end})")
+  def self.within(start, finish)
+    all("$where" => "(this.x >= #{start.x} || this.x <= #{finish.x}) && (this.y >= #{start.y} || this.y <= #{finish.y})")
   end
   
   key :x, Integer

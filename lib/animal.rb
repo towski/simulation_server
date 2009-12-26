@@ -5,6 +5,13 @@ class Animal
   key :y, Integer
   key :species, String
 
+  def find_path_to(other)
+    path = Path.new(:start => self, :goal => other)
+    path.calculate
+    path.save
+    path
+  end
+
   def step
     case rand(4)
       when 0: self.x = x + 1;

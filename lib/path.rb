@@ -6,7 +6,7 @@ class Path
   many :nodes
 
   def build_nodes
-    @terrain = Terrain.all("$where" => "(this.x >= #{start.x} || this.x <= #{goal.x}) && (this.y >= #{start.y} || this.y <= #{goal.y})")
+    @terrain = Terrain.within(start, goal)
     @node_grid = []
     @width  = goal.x - start.x + 1
     @height = goal.y - start.y + 1
